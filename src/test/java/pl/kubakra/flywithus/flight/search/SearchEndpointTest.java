@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @WebAppConfiguration
 public class SearchEndpointTest {
 
-
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
     private MockMvc mockMvc;
@@ -34,7 +33,7 @@ public class SearchEndpointTest {
     private WebApplicationContext webApplicationContext;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
@@ -88,6 +87,11 @@ public class SearchEndpointTest {
 
     @Test
     public void searchDatesShouldBeInFuture() throws Exception {
+        // TODO
+    }
+
+    @Test
+    public void shouldReturnReservationURL() throws Exception {
         // TODO
     }
 
