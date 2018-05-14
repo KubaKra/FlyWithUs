@@ -3,18 +3,12 @@ package pl.kubakra.flywithus.flight.search;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.springframework.hateoas.ResourceSupport;
+import pl.kubakra.flywithus.flight.LocalDateTimeSerializer;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @JsonTypeInfo(
@@ -25,7 +19,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = OneWayFlight.class, name = "oneWay"),
         @JsonSubTypes.Type(value = TwoWaysFlight.class, name = "twoWays")
 })
-public abstract class Flight extends ResourceSupport {
+abstract class Flight extends ResourceSupport {
 
     private final UUID uuid;
     @JsonProperty
@@ -33,7 +27,7 @@ public abstract class Flight extends ResourceSupport {
     @JsonProperty
     private final Price price;
 
-    public Flight(String company, Price price, UUID uuid) {
+    Flight(String company, Price price, UUID uuid) {
         this.company = company;
         this.price = price;
         this.uuid = uuid;
@@ -43,7 +37,7 @@ public abstract class Flight extends ResourceSupport {
         return uuid;
     }
 
-    public static class Price {
+    static class Price {
 
         @JsonProperty
         private final BigDecimal perPerson;
@@ -57,7 +51,7 @@ public abstract class Flight extends ResourceSupport {
 
     }
 
-    public static class Duration {
+    static class Duration {
 
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         private final LocalDateTime departure;
@@ -67,19 +61,6 @@ public abstract class Flight extends ResourceSupport {
         Duration(LocalDateTime departure, LocalDateTime arrival) {
             this.departure = departure;
             this.arrival = arrival;
-        }
-
-    }
-
-    private static class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
-
-        LocalDateTimeSerializer() {
-            super(LocalDateTime.class);
-        }
-
-        @Override
-        public void serialize(LocalDateTime time, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeString(time.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         }
 
     }

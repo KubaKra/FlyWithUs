@@ -1,17 +1,12 @@
 package pl.kubakra.flywithus.flight.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import pl.kubakra.flywithus.flight.LocalDateDeserializer;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
-public class SearchFlightsCriteria {
+class SearchFlightsCriteria {
 
     @JsonProperty
     private String from;
@@ -26,20 +21,6 @@ public class SearchFlightsCriteria {
 
     public boolean isOneWayTicket() {
         return returnDate == null;
-    }
-
-    private static class LocalDateDeserializer extends StdDeserializer<LocalDate> {
-
-        LocalDateDeserializer() {
-            super(LocalDate.class);
-        }
-
-        @Override
-        public LocalDate deserialize(JsonParser jp, DeserializationContext ctx)
-                throws IOException {
-            return LocalDate.parse(jp.readValueAs(String.class));
-        }
-
     }
 
 }
