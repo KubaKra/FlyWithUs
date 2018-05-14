@@ -1,4 +1,4 @@
-package pl.kubakra.flywithus.flight;
+package pl.kubakra.flywithus.tech.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

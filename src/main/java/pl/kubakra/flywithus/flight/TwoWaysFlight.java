@@ -1,4 +1,4 @@
-package pl.kubakra.flywithus.flight.search;
+package pl.kubakra.flywithus.flight;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,12 +1,12 @@
-package pl.kubakra.flywithus.flight.search;
+package pl.kubakra.flywithus.flight;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import pl.kubakra.flywithus.flight.LocalDateDeserializer;
+import pl.kubakra.flywithus.tech.serialization.LocalDateDeserializer;
 
 import java.time.LocalDate;
 
-class SearchFlightsCriteria {
+public class SearchFlightsCriteria {
 
     @JsonProperty
     private String from;
@@ -19,7 +19,7 @@ class SearchFlightsCriteria {
     @JsonProperty
     private int peopleCount;
 
-    public boolean isOneWayTicket() {
+    boolean isOneWayTicket() {
         return returnDate == null;
     }
 

@@ -3,7 +3,7 @@ package pl.kubakra.flywithus.flight.reserve;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.hateoas.ResourceSupport;
-import pl.kubakra.flywithus.flight.LocalDateTimeSerializer;
+import pl.kubakra.flywithus.tech.serialization.LocalDateTimeSerializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

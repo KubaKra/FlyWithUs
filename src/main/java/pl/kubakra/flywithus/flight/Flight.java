@@ -1,11 +1,11 @@
-package pl.kubakra.flywithus.flight.search;
+package pl.kubakra.flywithus.flight;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.hateoas.ResourceSupport;
-import pl.kubakra.flywithus.flight.LocalDateTimeSerializer;
+import pl.kubakra.flywithus.tech.serialization.LocalDateTimeSerializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import java.util.UUID;
         @JsonSubTypes.Type(value = OneWayFlight.class, name = "oneWay"),
         @JsonSubTypes.Type(value = TwoWaysFlight.class, name = "twoWays")
 })
-abstract class Flight extends ResourceSupport {
+public abstract class Flight extends ResourceSupport {
 
     private final UUID uuid;
     @JsonProperty
