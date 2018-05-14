@@ -9,11 +9,13 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -23,16 +25,22 @@ import java.time.format.DateTimeFormatter;
         @JsonSubTypes.Type(value = OneWayFlight.class, name = "oneWay"),
         @JsonSubTypes.Type(value = TwoWaysFlight.class, name = "twoWays")
 })
-public abstract class Flight {
+public abstract class Flight extends ResourceSupport {
 
+    private final UUID uuid;
     @JsonProperty
     private final String company;
     @JsonProperty
     private final Price price;
 
-    public Flight(String company, Price price) {
+    public Flight(String company, Price price, UUID uuid) {
         this.company = company;
         this.price = price;
+        this.uuid = uuid;
+    }
+
+    public UUID id() {
+        return uuid;
     }
 
     public static class Price {
