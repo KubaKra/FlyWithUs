@@ -2,11 +2,11 @@ package pl.kubakra.flywithus.user;
 
 import java.util.Optional;
 
-public class Guest implements User {
+class Guest implements User {
 
     private final String login;
 
-    public Guest(String login) {
+    Guest(String login) {
         this.login = login;
     }
 

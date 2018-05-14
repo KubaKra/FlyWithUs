@@ -1,20 +1,25 @@
 package pl.kubakra.flywithus.flight.reserve;
 
+import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
+import pl.kubakra.flywithus.flight.Flight;
+import pl.kubakra.flywithus.flight.FlightRepo;
+import pl.kubakra.flywithus.flight.SearchFlightsCriteria;
 
 import java.nio.charset.Charset;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -23,10 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = FlyWithUsApp.class)
-@WebAppConfiguration
+@SpringBootTest(classes = {FlyWithUsApp.class, ReservationTestContext.class})
 public class ReserveFlightEndpointTest {
-
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -51,11 +54,11 @@ public class ReserveFlightEndpointTest {
                 // then
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
-                        "\"paymentDeadline\":\"2018-02-26T15:00:00\"," +
-                        "\"price\":{\"total\":505.35,\"discount\":0}," +
+                        "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
+                        "\"price\":{\"total\":16401,\"discount\":0}," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations/7c989afa-fbd6-4cfd-9e34-931b42c2a23b\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationTestContext.UUID + "\"}" +
                         "}" +
                         "}"));
     }
@@ -71,11 +74,11 @@ public class ReserveFlightEndpointTest {
                 // then
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
-                        "\"paymentDeadline\":\"2018-02-26T15:00:00\"," +
-                        "\"price\":{\"total\":555.35,\"discount\":0}," +
+                        "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
+                        "\"price\":{\"total\":16401,\"discount\":0}," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations/aa0d891a-cde7-483d-95c5-7883e1d458c7\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationTestContext.UUID + "\"}" +
                         "}" +
                         "}"));
     }
@@ -84,7 +87,7 @@ public class ReserveFlightEndpointTest {
     public void shouldMakeReservationForRegisteredUser() throws Exception {
 
         // when
-        mockMvc.perform(post("/flights/4c3f5ebf-d9e8-4044-9e59-6b8a273a9914/reservations")
+        mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
                 .content("{" +
                         "\"quickCheckIn\":true," +
                         "\"user\":\"KubaKra\"" +
@@ -94,11 +97,11 @@ public class ReserveFlightEndpointTest {
                 // then
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
-                        "\"paymentDeadline\":\"2018-02-26T15:00:00\"," +
-                        "\"price\":{\"total\":14003.45,\"discount\":5}," +
+                        "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
+                        "\"price\":{\"total\":15580.95,\"discount\":5}," +
                         "\"_links\":{" +
-                        "\"flight\":{\"href\":\"http://localhost/flights/4c3f5ebf-d9e8-4044-9e59-6b8a273a9914\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/4c3f5ebf-d9e8-4044-9e59-6b8a273a9914/reservations/2764618e-0448-4814-9105-813c1a919c76\"}" +
+                        "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationTestContext.UUID + "\"}" +
                         "}" +
                         "}"));
 

@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+// it's naive de-normalized cache representation, my purpose is not to implement real search;
 @Repository
 public class FlightRepo {
 
@@ -25,16 +26,15 @@ public class FlightRepo {
                             LocalDateTime.of(2018, 02, 26, 13, 55)),
                     new Flight.Duration(LocalDateTime.of(2018, 02, 27, 20, 10),
                             LocalDateTime.of(2018, 02, 27, 20, 40)))
-    );
+            );
 
     public Set<Flight> getAll(SearchFlightsCriteria criteria) {
-        // it's naive DB representation, my purpose is not to implement real search;
+
         if (criteria.isOneWayTicket()) {
             return ImmutableSet.of(FLIGHTS.get(ONE_WAY_TICKET_KEY));
         }
         return ImmutableSet.of(FLIGHTS.get(TWO_WAYS_TICKET_KEY));
     }
-
 
     public Optional<Flight> get(String id) {
         return Optional.ofNullable(FLIGHTS.get(id));

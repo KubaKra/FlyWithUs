@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlyWithUsApp.class)
-@WebAppConfiguration
 public class SearchEndpointTest {
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
