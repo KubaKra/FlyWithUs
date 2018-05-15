@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
+import pl.kubakra.flywithus.flight.TestConfiguration;
 
 import java.nio.charset.Charset;
 
@@ -39,17 +40,20 @@ public class ReserveFlightEndpointTest {
 
         // when
         mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
-                .content("{\"quickCheckIn\":false}")
+                .content("{" +
+                        "\"quickCheckIn\":false," +
+                        "\"peopleCount\":1" +
+                        "}")
                 .contentType(contentType))
 
                 // then
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
                         "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
-                        "\"price\":{\"total\":16401,\"discount\":0}," +
+                        "\"price\":{\"total\":3280.2,\"discount\":0}," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationTestContext.UUID + "\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + TestConfiguration.UUID + "\"}" +
                         "}" +
                         "}"));
     }
@@ -59,17 +63,20 @@ public class ReserveFlightEndpointTest {
 
         // when
         mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
-                .content("{\"quickCheckIn\":true}")
+                .content("{" +
+                        "\"quickCheckIn\":true," +
+                        "\"peopleCount\":1" +
+                        "}")
                 .contentType(contentType))
 
                 // then
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
                         "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
-                        "\"price\":{\"total\":16401,\"discount\":0}," +
+                        "\"price\":{\"total\":3330.2,\"discount\":0}," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationTestContext.UUID + "\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + TestConfiguration.UUID + "\"}" +
                         "}" +
                         "}"));
     }
@@ -81,7 +88,8 @@ public class ReserveFlightEndpointTest {
         mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
                 .content("{" +
                         "\"quickCheckIn\":true," +
-                        "\"user\":\"KubaKra\"" +
+                        "\"user\":\"KubaKra\"," +
+                        "\"peopleCount\":1" +
                         "}")
                 .contentType(contentType))
 
@@ -89,10 +97,10 @@ public class ReserveFlightEndpointTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
                         "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
-                        "\"price\":{\"total\":15580.95,\"discount\":5}," +
+                        "\"price\":{\"total\":3163.69,\"discount\":5}," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationTestContext.UUID + "\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + TestConfiguration.UUID + "\"}" +
                         "}" +
                         "}"));
 
@@ -105,7 +113,8 @@ public class ReserveFlightEndpointTest {
         mockMvc.perform(post("/flights/not-existing-flight/reservations")
                 .content("{" +
                         "\"quickCheckIn\":true," +
-                        "\"user\":\"KubaKra\"" +
+                        "\"user\":\"KubaKra\"," +
+                        "\"peopleCount\":1" +
                         "}")
                 .contentType(contentType))
 

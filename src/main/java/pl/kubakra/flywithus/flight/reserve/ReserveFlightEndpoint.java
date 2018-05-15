@@ -38,7 +38,11 @@ public class ReserveFlightEndpoint {
         }
 
         User user = userRepo.getUser(reservationRequest.getUser());
-        Reservation reservation = reservationService.reserve(flight.get()).by(user);
+        Reservation reservation = reservationService
+                .reserve(flight.get())
+                .withPeopleCount(reservationRequest.getPeopleCount())
+                .withQuickCheckIn(reservationRequest.isQuickCheckIn())
+                .by(user);
 
         reservation = addHateoas(reservation);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservation);

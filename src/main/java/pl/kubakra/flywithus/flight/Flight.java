@@ -37,8 +37,8 @@ public abstract class Flight extends ResourceSupport {
         return uuid;
     }
 
-    public BigDecimal totalPrice() {
-        return price.total;
+    public BigDecimal pricePerPerson() {
+        return price.perPerson;
     }
 
     static class Price {

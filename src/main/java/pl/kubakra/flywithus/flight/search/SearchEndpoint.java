@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.kubakra.flywithus.flight.Flight;
 import pl.kubakra.flywithus.flight.FlightRepo;
 import pl.kubakra.flywithus.flight.GetFlightsCriteria;
+import pl.kubakra.flywithus.tech.time.TimeService;
 
 import java.util.Set;
 
@@ -18,16 +19,23 @@ import java.util.Set;
 public class SearchEndpoint {
 
     private final FlightRepo flightRepo;
+    private final TimeService timeService;
 
-    public SearchEndpoint(@Autowired FlightRepo flightRepo) {
+    public SearchEndpoint(@Autowired FlightRepo flightRepo, @Autowired TimeService timeService) {
         this.flightRepo = flightRepo;
+        this.timeService = timeService;
     }
 
     @GetMapping(value = "/flights", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Flight> search(@RequestBody GetFlightsCriteria getFlightsCriteria) {
+    public ResponseEntity<Set<Flight>> search(@RequestBody GetFlightsCriteria getFlightsCriteria) {
+
+        if (!getFlightsCriteria.areDatesAfterThan(timeService.now().toLocalDate())) {
+            return ResponseEntity.badRequest().build();
+        }
+
         Set<Flight> flights = flightRepo.getAll(getFlightsCriteria);
         flights.forEach(f -> addHateoas(f));
-        return flights;
+        return ResponseEntity.ok(flights);
     }
 
     @GetMapping(value = "/flights/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

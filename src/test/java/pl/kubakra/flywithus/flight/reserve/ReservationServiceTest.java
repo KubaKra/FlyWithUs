@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kubakra.flywithus.flight.Flight;
+import pl.kubakra.flywithus.flight.TestConfiguration;
 import pl.kubakra.flywithus.user.User;
 
 import java.math.BigDecimal;
@@ -15,10 +16,10 @@ import static java.math.BigDecimal.TEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static pl.kubakra.flywithus.flight.reserve.ReservationTestContext.NOW;
+import static pl.kubakra.flywithus.flight.TestConfiguration.NOW;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ReservationTestContext.class)
+@SpringBootTest(classes = TestConfiguration.class)
 public class ReservationServiceTest {
 
     private static final UUID ANY_UUID = UUID.randomUUID();
@@ -34,13 +35,13 @@ public class ReservationServiceTest {
     public void shouldMakeReservation() {
 
         // given
-        Flight flight = flightWithTotalPrice(TEN);
+        Flight flight = flightWithPricePerPerson(TEN);
 
         User user = mock(User.class);
         given(user.isRegistered()).willReturn(false);
 
         // when
-        Reservation reservation = reservationService.reserve(flight).by(user);
+        Reservation reservation = reservationService.reserve(flight).withPeopleCount(1).withQuickCheckIn(false).by(user);
 
         // then
         assertThat(reservation).isEqualTo(reservation(TEN, NO_DISCOUNT));
@@ -50,29 +51,30 @@ public class ReservationServiceTest {
     public void shouldMakeReservationWithQuickCheckIn() {
 
         // given
-        Flight flight = flightWithTotalPrice(TEN);
+        Flight flight = flightWithPricePerPerson(TEN);
 
         User user = mock(User.class);
         given(user.isRegistered()).willReturn(false);
 
         // when
-        Reservation reservation = reservationService.reserve(flight).withQuickCheckIn().by(user);
+        Reservation reservation = reservationService.reserve(flight)
+                .withPeopleCount(2).withQuickCheckIn(true).by(user);
 
         // then
-        assertThat(reservation).isEqualTo(reservation(TEN.add(FIFTY), NO_DISCOUNT));
+        assertThat(reservation).isEqualTo(reservation(BigDecimal.valueOf(120), NO_DISCOUNT));
     }
 
     @Test
     public void shouldMakeReservationForRegisteredUser() {
 
         // given
-        Flight flight = flightWithTotalPrice(BigDecimal.valueOf(100));
+        Flight flight = flightWithPricePerPerson(BigDecimal.valueOf(100));
 
         User user = mock(User.class);
         given(user.isRegistered()).willReturn(true);
 
         // when
-        Reservation reservation = reservationService.reserve(flight).by(user);
+        Reservation reservation = reservationService.reserve(flight).withPeopleCount(1).withQuickCheckIn(false).by(user);
 
         // then
         assertThat(reservation).isEqualTo(reservation(NINTY_FIVE, REGISTERED_USER_DISCOUNT));
@@ -82,27 +84,27 @@ public class ReservationServiceTest {
     public void shouldCalculateDiscountWithQuickCheckInPrice() {
 
         // given
-        Flight flight = flightWithTotalPrice(FIFTY);
+        Flight flight = flightWithPricePerPerson(FIFTY);
 
         User user = mock(User.class);
         given(user.isRegistered()).willReturn(true);
 
         // when
-        Reservation reservation = reservationService.reserve(flight).withQuickCheckIn().by(user);
+        Reservation reservation = reservationService.reserve(flight).withPeopleCount(1).withQuickCheckIn(true).by(user);
 
         // then
         assertThat(reservation).isEqualTo(reservation(NINTY_FIVE, REGISTERED_USER_DISCOUNT));
     }
 
     private Reservation reservation(BigDecimal totalPrice, BigDecimal discount) {
-        return new Reservation(ANY_UUID, ReservationTestContext.UUID, NOW.plusDays(2),
+        return new Reservation(ANY_UUID, TestConfiguration.UUID, NOW.plusDays(2),
                 new Reservation.Price(totalPrice, discount));
     }
 
-    private Flight flightWithTotalPrice(BigDecimal totalPrice) {
+    private Flight flightWithPricePerPerson(BigDecimal pricePerPerson) {
         Flight flight = mock(Flight.class);
-        given(flight.id()).willReturn(ReservationTestContext.UUID);
-        given(flight.totalPrice()).willReturn(totalPrice);
+        given(flight.id()).willReturn(TestConfiguration.UUID);
+        given(flight.pricePerPerson()).willReturn(pricePerPerson);
         return flight;
     }
 

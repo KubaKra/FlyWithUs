@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
+import pl.kubakra.flywithus.flight.TestConfiguration;
 
 import java.nio.charset.Charset;
 
@@ -42,8 +43,8 @@ public class SearchEndpointTest {
                 .content("{\n" +
                         "    \"from\": \"Warsaw\",\n" +
                         "    \"to\": \"Katowice\",\n" +
-                        "    \"when\": \"2018-02-26\",\n" +
-                        "    \"returnDate\": \"2018-02-27\",\n" +
+                        "    \"when\": \"" + TestConfiguration.NOW.plusDays(1).toLocalDate().toString() + "\",\n" +
+                        "    \"returnDate\": \"" + TestConfiguration.NOW.plusDays(2).toLocalDate().toString() + "\",\n" +
                         "    \"peopleCount\": 3\n" +
                         "}")
                 .contentType(contentType))
@@ -68,7 +69,7 @@ public class SearchEndpointTest {
                 .content("{\n" +
                         "    \"from\": \"Warsaw\",\n" +
                         "    \"to\": \"Zurich\",\n" +
-                        "    \"when\": \"2018-05-26\",\n" +
+                        "    \"when\": \"" + TestConfiguration.NOW.plusDays(1).toLocalDate().toString() + "\",\n" +
                         "    \"peopleCount\": 1\n" +
                         "}")
                 .contentType(contentType))
@@ -86,7 +87,19 @@ public class SearchEndpointTest {
 
     @Test
     public void searchDatesShouldBeInFuture() throws Exception {
-        // TODO
+
+        // when
+        mockMvc.perform(get("/flights")
+                .content("{\n" +
+                        "    \"from\": \"Warsaw\",\n" +
+                        "    \"to\": \"Zurich\",\n" +
+                        "    \"when\": \"" + TestConfiguration.NOW.minusDays(1).toLocalDate().toString() + "\",\n" +
+                        "    \"peopleCount\": 1\n" +
+                        "}")
+                .contentType(contentType))
+
+                // then
+                .andExpect(status().isBadRequest());
     }
 
 }
