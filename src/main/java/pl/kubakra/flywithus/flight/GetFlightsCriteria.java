@@ -19,6 +19,7 @@ public class GetFlightsCriteria {
     @JsonProperty
     private int peopleCount;
 
+    // used by jackson to deserialize
     public GetFlightsCriteria() {
     }
 

@@ -27,6 +27,7 @@ public class CancelReservationEndpoint {
 
     @DeleteMapping(value = "/flights/{flightId}/reservations/{reservationId}")
     public ResponseEntity<Void> reserve(@PathVariable String flightId, @PathVariable String reservationId) {
+
         Optional<Flight> flight = flightRepo.getBy(UUID.fromString(flightId));
         if (!flight.isPresent()) {
             return ResponseEntity.notFound().build();

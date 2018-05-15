@@ -1,25 +1,30 @@
-package pl.kubakra.flywithus.flight;
+package pl.kubakra.flywithus.flight.reserve;
 
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.kubakra.flywithus.flight.reserve.ReservationRepo;
 import pl.kubakra.flywithus.flight.reserve.ReservationService;
+import pl.kubakra.flywithus.payment.*;
 import pl.kubakra.flywithus.tech.id.IdGenerator;
 import pl.kubakra.flywithus.tech.time.TimeService;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static org.mockito.BDDMockito.given;
+
 @Configuration
-public class TestConfiguration {
+public class ReservationServiceTestConfiguration {
 
     public static final LocalDateTime NOW = LocalDateTime.of(2018, 05, 14, 17, 17);
     public static final UUID UUID = java.util.UUID.fromString("486f1894-0297-4441-9341-1e1b7edb9849");
 
-
     @Bean
     public ReservationService reservationService() {
-        return new ReservationService(timeService(), idGenerator(), reservationRepo());
+        return new ReservationService(timeService(), idGenerator(), reservationRepo(), paymentService());
     }
 
     @Bean
@@ -45,7 +50,33 @@ public class TestConfiguration {
 
     @Bean
     public ReservationRepo reservationRepo() {
-        return new ReservationRepo();
+        return new ReservationRepo(paymentService(), paymentRepo());
+    }
+
+    @Bean
+    public PaymentService paymentService() {
+        return new PaymentService(externalPaymentService(), paymentRepo());
+    }
+
+    @Bean
+    public PaymentRepo paymentRepo() {
+        return new PaymentRepo();
+    }
+
+    private ExternalPaymentService externalPaymentService() {
+
+
+        return new ExternalPaymentService() {
+            @Override
+            public ExternalPaymentSystemId registerNewPayment(BigDecimal value) {
+                return ExternalPaymentSystemIdTestFactory.fake();
+            }
+
+            @Override
+            public boolean cancelPayment(ExternalPaymentSystemId systemId) {
+                return true;
+            }
+        };
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
-import pl.kubakra.flywithus.flight.TestConfiguration;
 
 import java.util.UUID;
 
@@ -41,7 +40,7 @@ public class GetReservationTest {
 
         // given
         Reservation savedReservation = new Reservation(UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4"),
-                UUID.fromString("486f1894-0297-4441-9341-1e1b7edb9849"), TestConfiguration.NOW.minusDays(6), new Reservation.Price(TEN, ZERO));
+                UUID.fromString("486f1894-0297-4441-9341-1e1b7edb9849"), ReservationServiceTestConfiguration.NOW.minusDays(6), new Reservation.Price(TEN, ZERO));
         reservationRepo.save(savedReservation);
 
         // when

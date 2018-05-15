@@ -1,42 +1,52 @@
 package pl.kubakra.flywithus.flight.reserve;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.MoreObjects;
-import org.springframework.hateoas.ResourceSupport;
-import pl.kubakra.flywithus.tech.serialization.LocalDateTimeSerializer;
+import jdk.nashorn.internal.ir.Node;
+import pl.kubakra.flywithus.payment.Payment;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
-class Reservation extends ResourceSupport {
+class Reservation {
 
-    private final UUID uuid;
+    private final UUID id;
     private final UUID flightId;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private final LocalDateTime paymentDeadline;
-    @JsonProperty
     private final Price price;
+    private Payment payment;
 
-    // TODO transient link/id to payment system
-    // TODO transient reservation status
-    // TODO MDB to 'getBy' response from payment system
+    Reservation(UUID id, UUID flightId, LocalDateTime paymentDeadline, Price price) {
+        this(id, flightId, paymentDeadline, price, null);
+    }
 
-
-    Reservation(UUID uuid, UUID flightId, LocalDateTime paymentDeadline, Price price) {
-        this.uuid = uuid;
+    Reservation(UUID id, UUID flightId, LocalDateTime paymentDeadline, Price price, Payment payment) {
+        this.id = id;
         this.flightId = flightId;
         this.paymentDeadline = paymentDeadline;
         this.price = price;
+        this.payment = payment;
     }
 
-    public UUID id() {
-        return uuid;
+    UUID id() {
+        return id;
     }
 
-    public UUID flightId() {
+    UUID flightId() {
         return flightId;
+    }
+
+    Optional<Payment> payment() {
+        return Optional.ofNullable(payment);
+    }
+
+    LocalDateTime paymentDeadline() {
+        return paymentDeadline;
+    }
+
+    Price price() {
+        return price;
     }
 
     @Override
@@ -67,7 +77,7 @@ class Reservation extends ResourceSupport {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("uuid", uuid)
+                .add("id", id)
                 .add("flightId", flightId)
                 .add("paymentDeadline", paymentDeadline)
                 .add("price", price)
@@ -76,14 +86,16 @@ class Reservation extends ResourceSupport {
 
     static class Price {
 
-        @JsonProperty
         private final BigDecimal total;
-        @JsonProperty
         private final BigDecimal discount;
 
         Price(BigDecimal total, BigDecimal discount) {
             this.total = total;
             this.discount = discount;
+        }
+
+        BigDecimal total() {
+            return total;
         }
 
         @Override
@@ -113,4 +125,5 @@ class Reservation extends ResourceSupport {
         }
 
     }
+
 }

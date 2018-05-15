@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kubakra.flywithus.flight.Flight;
 import pl.kubakra.flywithus.flight.reserve.Reservation.Price;
+import pl.kubakra.flywithus.payment.Payment;
+import pl.kubakra.flywithus.payment.PaymentService;
 import pl.kubakra.flywithus.tech.id.IdGenerator;
 import pl.kubakra.flywithus.tech.time.TimeService;
 import pl.kubakra.flywithus.user.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class ReservationService {
@@ -17,12 +20,14 @@ public class ReservationService {
     private final TimeService timeService;
     private final IdGenerator idGenerator;
     private final ReservationRepo reservationRepo;
+    private final PaymentService paymentService;
 
     public ReservationService(@Autowired TimeService timeService, @Autowired IdGenerator idGenerator,
-                              @Autowired ReservationRepo reservationRepo) {
+                              @Autowired ReservationRepo reservationRepo, @Autowired PaymentService paymentService) {
         this.timeService = timeService;
         this.idGenerator = idGenerator;
         this.reservationRepo = reservationRepo;
+        this.paymentService = paymentService;
     }
 
     public ReservationDsl_PeopleCount reserve(Flight flight) {
@@ -72,10 +77,16 @@ public class ReservationService {
         }
 
         public Reservation by(User user) {
+
+            UUID reservationId = idGenerator.generate();
             LocalDateTime paymentDeadline = timeService.now().plusDays(2);
             Price price = calculatePrice(user);
-            Reservation reservation = new Reservation(idGenerator.generate(), flight.id(), paymentDeadline, price);
-            return reservationRepo.save(reservation);
+            Payment payment = paymentService.registerPaymentByPayWithUs(reservationId, price.total());
+
+            Reservation reservation = new Reservation(reservationId, flight.id(), paymentDeadline, price, payment);
+            reservationRepo.save(reservation);
+
+            return reservation;
         }
 
         private Price calculatePrice(User user) {

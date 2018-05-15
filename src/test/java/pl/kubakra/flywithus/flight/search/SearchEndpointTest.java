@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
-import pl.kubakra.flywithus.flight.TestConfiguration;
+import pl.kubakra.flywithus.flight.reserve.ReservationServiceTestConfiguration;
 
 import java.nio.charset.Charset;
 
@@ -43,8 +43,8 @@ public class SearchEndpointTest {
                 .content("{\n" +
                         "    \"from\": \"Warsaw\",\n" +
                         "    \"to\": \"Katowice\",\n" +
-                        "    \"when\": \"" + TestConfiguration.NOW.plusDays(1).toLocalDate().toString() + "\",\n" +
-                        "    \"returnDate\": \"" + TestConfiguration.NOW.plusDays(2).toLocalDate().toString() + "\",\n" +
+                        "    \"when\": \"" + ReservationServiceTestConfiguration.NOW.plusDays(1).toLocalDate().toString() + "\",\n" +
+                        "    \"returnDate\": \"" + ReservationServiceTestConfiguration.NOW.plusDays(2).toLocalDate().toString() + "\",\n" +
                         "    \"peopleCount\": 3\n" +
                         "}")
                 .contentType(contentType))
@@ -69,7 +69,7 @@ public class SearchEndpointTest {
                 .content("{\n" +
                         "    \"from\": \"Warsaw\",\n" +
                         "    \"to\": \"Zurich\",\n" +
-                        "    \"when\": \"" + TestConfiguration.NOW.plusDays(1).toLocalDate().toString() + "\",\n" +
+                        "    \"when\": \"" + ReservationServiceTestConfiguration.NOW.plusDays(1).toLocalDate().toString() + "\",\n" +
                         "    \"peopleCount\": 1\n" +
                         "}")
                 .contentType(contentType))
@@ -93,7 +93,7 @@ public class SearchEndpointTest {
                 .content("{\n" +
                         "    \"from\": \"Warsaw\",\n" +
                         "    \"to\": \"Zurich\",\n" +
-                        "    \"when\": \"" + TestConfiguration.NOW.minusDays(1).toLocalDate().toString() + "\",\n" +
+                        "    \"when\": \"" + ReservationServiceTestConfiguration.NOW.minusDays(1).toLocalDate().toString() + "\",\n" +
                         "    \"peopleCount\": 1\n" +
                         "}")
                 .contentType(contentType))

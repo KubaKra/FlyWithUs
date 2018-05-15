@@ -10,15 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
-import pl.kubakra.flywithus.flight.Flight;
 import pl.kubakra.flywithus.flight.FlightFactory;
-import pl.kubakra.flywithus.flight.TestConfiguration;
 
 import java.nio.charset.Charset;
-import java.util.UUID;
 
-import static java.math.BigDecimal.TEN;
-import static java.math.BigDecimal.ZERO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,12 +56,14 @@ public class ReserveFlightEndpointTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
                         "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
-                        "\"price\":{\"total\":3280.2,\"discount\":0}," +
+                        "\"totalPrice\":3280.2," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + TestConfiguration.UUID + "\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationServiceTestConfiguration.UUID + "\"}," +
+                        "\"payment\":{\"href\":\"www.paywithus.com/some-fake-id\"}" +
                         "}" +
                         "}"));
+
     }
 
     @Test
@@ -87,10 +84,11 @@ public class ReserveFlightEndpointTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
                         "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
-                        "\"price\":{\"total\":3330.2,\"discount\":0}," +
+                        "\"totalPrice\":3330.2," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + TestConfiguration.UUID + "\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationServiceTestConfiguration.UUID + "\"}," +
+                        "\"payment\":{\"href\":\"www.paywithus.com/some-fake-id\"}" +
                         "}" +
                         "}"));
     }
@@ -114,10 +112,11 @@ public class ReserveFlightEndpointTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json("{" +
                         "\"paymentDeadline\":\"2018-05-16T17:17:00\"," +
-                        "\"price\":{\"total\":3163.69,\"discount\":5}," +
+                        "\"totalPrice\":3163.69," +
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
-                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + TestConfiguration.UUID + "\"}" +
+                        "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationServiceTestConfiguration.UUID + "\"}," +
+                        "\"payment\":{\"href\":\"www.paywithus.com/some-fake-id\"}" +
                         "}" +
                         "}"));
 

@@ -45,7 +45,9 @@ public class SearchEndpoint {
     }
 
     private Flight addHateoas(Flight f) {
-        // every call will change 'db', so removeLinks it's a hack to make it work without real immutable objects (ResourceSupport) and real db
+        // every call will change 'db',
+        // so removeLinks it's a quick hack to make it work without real immutable objects (ResourceSupport) and real db.
+        // normally i'd use composition (create new object that contains Flight and has links)
         f.removeLinks();
         f.add(ControllerLinkBuilder.linkTo(ControllerLinkBuilder.methodOn(SearchEndpoint.class).getFlight(f.id().toString())).withSelfRel());
         return f;

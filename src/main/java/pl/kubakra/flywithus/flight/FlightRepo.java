@@ -5,7 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 // it's naive de-normalized cache representation, my purpose is not to implement real search;
 @Repository
@@ -13,7 +17,7 @@ public class FlightRepo {
 
     private static final UUID ONE_WAY_TICKET_KEY = UUID.fromString("ee18ccca-078d-4a62-95a7-2aea11d5ddcb");
     private static final UUID TWO_WAYS_TICKET_KEY = UUID.fromString("41f8b9f3-388d-4ddc-822e-233c383fa371");
-    private static final Map<UUID, Flight> FLIGHTS = new HashMap<>();
+    private static final Map<UUID, Flight> FLIGHTS = new ConcurrentHashMap<>();
 
     static {
         FLIGHTS.put(ONE_WAY_TICKET_KEY, new OneWayFlight(ONE_WAY_TICKET_KEY, "Swiss", new Flight.Price(BigDecimal.valueOf(418), BigDecimal.valueOf(418)),
