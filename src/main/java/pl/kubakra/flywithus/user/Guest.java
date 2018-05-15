@@ -19,4 +19,5 @@ class Guest implements User {
     public Optional<String> login() {
         return Optional.ofNullable(login);
     }
+
 }

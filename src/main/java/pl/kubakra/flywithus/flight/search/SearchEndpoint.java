@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kubakra.flywithus.flight.Flight;
 import pl.kubakra.flywithus.flight.FlightRepo;
-import pl.kubakra.flywithus.flight.SearchFlightsCriteria;
+import pl.kubakra.flywithus.flight.GetFlightsCriteria;
 
 import java.util.Set;
 
@@ -24,8 +24,8 @@ public class SearchEndpoint {
     }
 
     @GetMapping(value = "/flights", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Set<Flight> search(@RequestBody SearchFlightsCriteria searchFlightsCriteria) {
-        Set<Flight> flights = flightRepo.getAll(searchFlightsCriteria);
+    public Set<Flight> search(@RequestBody GetFlightsCriteria getFlightsCriteria) {
+        Set<Flight> flights = flightRepo.getAll(getFlightsCriteria);
         flights.forEach(f -> addHateoas(f));
         return flights;
     }

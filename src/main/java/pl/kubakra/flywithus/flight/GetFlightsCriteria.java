@@ -6,7 +6,7 @@ import pl.kubakra.flywithus.tech.serialization.LocalDateDeserializer;
 
 import java.time.LocalDate;
 
-public class SearchFlightsCriteria {
+public class GetFlightsCriteria {
 
     @JsonProperty
     private String from;

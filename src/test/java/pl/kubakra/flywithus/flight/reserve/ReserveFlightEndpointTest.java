@@ -1,34 +1,25 @@
 package pl.kubakra.flywithus.flight.reserve;
 
-import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
-import pl.kubakra.flywithus.flight.Flight;
-import pl.kubakra.flywithus.flight.FlightRepo;
-import pl.kubakra.flywithus.flight.SearchFlightsCriteria;
 
 import java.nio.charset.Charset;
-import java.util.Optional;
-import java.util.Set;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {FlyWithUsApp.class, ReservationTestContext.class})
+@SpringBootTest(classes = FlyWithUsApp.class)
 public class ReserveFlightEndpointTest {
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -108,18 +99,18 @@ public class ReserveFlightEndpointTest {
     }
 
     @Test
-    public void shouldReturnBlaBlaWhenFlightIsNotAvailableAnymore() throws Exception {
+    public void shouldReturn404WhenFlightIsNotAvailable() throws Exception {
 
-    }
+        // when
+        mockMvc.perform(post("/flights/not-existing-flight/reservations")
+                .content("{" +
+                        "\"quickCheckIn\":true," +
+                        "\"user\":\"KubaKra\"" +
+                        "}")
+                .contentType(contentType))
 
-    @Test
-    public void shouldReturnBlaBla2WhenUserSendNotExistingFlightData() throws Exception {
-
-    }
-
-    @Test
-    public void shouldReturnBlaBla3WhenPriceChanged() throws Exception {
-
+                // then
+                .andExpect(status().isNotFound());
     }
 
 }

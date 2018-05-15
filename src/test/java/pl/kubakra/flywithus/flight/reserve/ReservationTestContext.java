@@ -1,20 +1,14 @@
 package pl.kubakra.flywithus.flight.reserve;
 
-import com.google.common.collect.ImmutableSet;
-import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import pl.kubakra.flywithus.flight.Flight;
 import pl.kubakra.flywithus.flight.FlightRepo;
-import pl.kubakra.flywithus.flight.SearchFlightsCriteria;
 import pl.kubakra.flywithus.flight.TestFlightRepo;
 import pl.kubakra.flywithus.tech.id.IdGenerator;
 import pl.kubakra.flywithus.tech.time.TimeService;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Configuration

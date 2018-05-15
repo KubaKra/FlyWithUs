@@ -1,8 +1,6 @@
 package pl.kubakra.flywithus.flight;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,12 +10,16 @@ import java.util.Set;
 import java.util.UUID;
 
 public class TestFlightRepo extends FlightRepo {
-//    Expected: 2018-02-26T15:00:00
-//    got: 2018-05-16T17:17:00
-//    ; price.total
-//    Expected: 14003.45
-//    got: 2669.5
+
     private static final Map<String, Flight> FLIGHTS = ImmutableMap.of(
+            "ee18ccca-078d-4a62-95a7-2aea11d5ddcb", new OneWayFlight(UUID.fromString("ee18ccca-078d-4a62-95a7-2aea11d5ddcb"), "Swiss", new Flight.Price(BigDecimal.valueOf(418), BigDecimal.valueOf(418)),
+                    new Flight.Duration(LocalDateTime.of(2018, 02, 26, 13, 20),
+                            LocalDateTime.of(2018, 02, 26, 13, 55))),
+            "41f8b9f3-388d-4ddc-822e-233c383fa371", new TwoWaysFlight(UUID.fromString("41f8b9f3-388d-4ddc-822e-233c383fa371"), "LOT", new Flight.Price(BigDecimal.valueOf(130.5), BigDecimal.valueOf(391.5)),
+                    new Flight.Duration(LocalDateTime.of(2018, 02, 26, 13, 20),
+                            LocalDateTime.of(2018, 02, 26, 13, 55)),
+                    new Flight.Duration(LocalDateTime.of(2018, 02, 27, 20, 10),
+                            LocalDateTime.of(2018, 02, 27, 20, 40))),
             "4c3f5ebf-d9e8-4044-9e59-6b8a273a9914", new TwoWaysFlight(UUID.fromString("4c3f5ebf-d9e8-4044-9e59-6b8a273a9914"),
                     "Lufthansa", new Flight.Price(BigDecimal.valueOf(1405), BigDecimal.valueOf(2810)),
                     new Flight.Duration(LocalDateTime.of(2018, 02, 26, 13, 20),
@@ -33,8 +35,8 @@ public class TestFlightRepo extends FlightRepo {
     );
 
     @Override
-    public Set<Flight> getAll(SearchFlightsCriteria criteria) {
-        throw new NotImplementedException();
+    public Set<Flight> getAll(GetFlightsCriteria criteria) {
+        return super.getAll(criteria);
     }
 
     @Override

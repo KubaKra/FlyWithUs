@@ -9,11 +9,8 @@ class ReservationRequest {
     @JsonProperty
     private boolean quickCheckIn;
 
-    public boolean isQuickCheckIn() {
-        return quickCheckIn;
-    }
-
     public String getUser() {
         return user;
     }
+
 }

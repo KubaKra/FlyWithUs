@@ -34,15 +34,12 @@ public class ReserveFlightEndpoint {
     public ResponseEntity<Reservation> reserve(@PathVariable String id, @RequestBody ReservationRequest reservationRequest) {
         Optional<Flight> flight = flightRepo.get(id);
         if (!flight.isPresent()) {
-            // TODO add info to user, why there is 404
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
 
         User user = userRepo.getUser(reservationRequest.getUser());
-
-        reservationRequest.isQuickCheckIn();
-
         Reservation reservation = reservationService.reserve(flight.get()).by(user);
+
         reservation = addHateoas(reservation);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservation);
     }

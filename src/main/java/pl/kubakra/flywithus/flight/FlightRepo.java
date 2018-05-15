@@ -28,8 +28,7 @@ public class FlightRepo {
                             LocalDateTime.of(2018, 02, 27, 20, 40)))
             );
 
-    public Set<Flight> getAll(SearchFlightsCriteria criteria) {
-
+    public Set<Flight> getAll(GetFlightsCriteria criteria) {
         if (criteria.isOneWayTicket()) {
             return ImmutableSet.of(FLIGHTS.get(ONE_WAY_TICKET_KEY));
         }

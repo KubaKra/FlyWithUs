@@ -53,5 +53,4 @@ public class GetReservationTest {
                 .andExpect(status().isNotFound());
     }
 
-
 }
