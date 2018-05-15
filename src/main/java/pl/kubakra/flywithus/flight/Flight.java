@@ -27,7 +27,7 @@ public abstract class Flight extends ResourceSupport {
     @JsonProperty
     private final Price price;
 
-    Flight(String company, Price price, UUID uuid) {
+    protected Flight(String company, Price price, UUID uuid) {
         this.company = company;
         this.price = price;
         this.uuid = uuid;
@@ -40,6 +40,8 @@ public abstract class Flight extends ResourceSupport {
     public BigDecimal pricePerPerson() {
         return price.perPerson;
     }
+
+    public abstract boolean areDatesBefore(LocalDateTime time);
 
     static class Price {
 
@@ -65,6 +67,11 @@ public abstract class Flight extends ResourceSupport {
         Duration(LocalDateTime departure, LocalDateTime arrival) {
             this.departure = departure;
             this.arrival = arrival;
+        }
+
+
+        boolean areDatesBefore(LocalDateTime time) {
+            return departure.isBefore(time) && arrival.isBefore(time);
         }
 
     }

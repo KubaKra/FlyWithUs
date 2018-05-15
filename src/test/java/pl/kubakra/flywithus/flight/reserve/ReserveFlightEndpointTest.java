@@ -10,10 +10,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
+import pl.kubakra.flywithus.flight.Flight;
+import pl.kubakra.flywithus.flight.FlightFactory;
 import pl.kubakra.flywithus.flight.TestConfiguration;
 
 import java.nio.charset.Charset;
+import java.util.UUID;
 
+import static java.math.BigDecimal.TEN;
+import static java.math.BigDecimal.ZERO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +35,9 @@ public class ReserveFlightEndpointTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    private FlightFactory flightFactory;
+
     @Before
     public void setup() {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
@@ -37,6 +45,9 @@ public class ReserveFlightEndpointTest {
 
     @Test
     public void shouldMakeReservation() throws Exception {
+
+        // given
+        flightFactory.createAirFranceFlight();
 
         // when
         mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
@@ -61,6 +72,9 @@ public class ReserveFlightEndpointTest {
     @Test
     public void shouldMakeReservationWithQuickCheckIn() throws Exception {
 
+        // given
+        flightFactory.createAirFranceFlight();
+
         // when
         mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
                 .content("{" +
@@ -83,6 +97,9 @@ public class ReserveFlightEndpointTest {
 
     @Test
     public void shouldMakeReservationForRegisteredUser() throws Exception {
+
+        // given
+        flightFactory.createAirFranceFlight();
 
         // when
         mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb9849/reservations")
@@ -110,7 +127,7 @@ public class ReserveFlightEndpointTest {
     public void shouldReturn404WhenFlightIsNotAvailable() throws Exception {
 
         // when
-        mockMvc.perform(post("/flights/not-existing-flight/reservations")
+        mockMvc.perform(post("/flights/486f1894-0297-4441-9341-1e1b7edb1111/reservations")
                 .content("{" +
                         "\"quickCheckIn\":true," +
                         "\"user\":\"KubaKra\"," +

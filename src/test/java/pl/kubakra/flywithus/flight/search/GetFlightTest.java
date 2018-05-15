@@ -51,7 +51,7 @@ public class GetFlightTest {
     public void shouldReturn404ForNotExistingFlight() throws Exception {
 
         // when
-        mockMvc.perform(get("/flights/hy-hy-hy"))
+        mockMvc.perform(get("/flights/ee18ccca-078d-4a62-95a7-2aea11d52222"))
 
                 // then
                 .andExpect(status().isNotFound());

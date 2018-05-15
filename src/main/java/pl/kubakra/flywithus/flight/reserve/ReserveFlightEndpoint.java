@@ -13,6 +13,7 @@ import pl.kubakra.flywithus.user.User;
 import pl.kubakra.flywithus.user.UserRepo;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class ReserveFlightEndpoint {
@@ -32,7 +33,7 @@ public class ReserveFlightEndpoint {
 
     @PostMapping(value = "/flights/{id}/reservations", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Reservation> reserve(@PathVariable String id, @RequestBody ReservationRequest reservationRequest) {
-        Optional<Flight> flight = flightRepo.get(id);
+        Optional<Flight> flight = flightRepo.getBy(UUID.fromString(id));
         if (!flight.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -50,10 +51,10 @@ public class ReserveFlightEndpoint {
 
 
     @GetMapping(value = "/flights/reservations/{reservationId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Reservation getReservation(@PathVariable String reservationId) {
-        Reservation reservation = reservationRepo.getBy(reservationId);
-        reservation = addHateoas(reservation);
-        return reservation;
+    public ResponseEntity<Reservation> getReservation(@PathVariable String reservationId) {
+        return reservationRepo.getBy(UUID.fromString(reservationId))
+                .map(r -> ResponseEntity.ok().body(addHateoas(r)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     private Reservation addHateoas(Reservation r) {

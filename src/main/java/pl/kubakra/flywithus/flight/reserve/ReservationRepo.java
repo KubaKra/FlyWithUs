@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -16,8 +17,12 @@ public class ReservationRepo {
         return reservation;
     }
 
-    public Reservation getBy(String id) {
-        return RESERVATIONS.get(id);
+    public Optional<Reservation> getBy(UUID id) {
+        return Optional.ofNullable(RESERVATIONS.get(id));
+    }
+
+    public void delete(Reservation reservation) {
+        RESERVATIONS.remove(reservation.id());
     }
 
 }

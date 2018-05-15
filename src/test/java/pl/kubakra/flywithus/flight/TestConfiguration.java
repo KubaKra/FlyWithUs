@@ -2,9 +2,6 @@ package pl.kubakra.flywithus.flight;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import pl.kubakra.flywithus.flight.FlightRepo;
-import pl.kubakra.flywithus.flight.TestFlightRepo;
 import pl.kubakra.flywithus.flight.reserve.ReservationRepo;
 import pl.kubakra.flywithus.flight.reserve.ReservationService;
 import pl.kubakra.flywithus.tech.id.IdGenerator;
@@ -49,13 +46,6 @@ public class TestConfiguration {
     @Bean
     public ReservationRepo reservationRepo() {
         return new ReservationRepo();
-    }
-
-
-    @Bean
-    @Primary
-    public FlightRepo flightRepo() {
-        return new TestFlightRepo();
     }
 
 }

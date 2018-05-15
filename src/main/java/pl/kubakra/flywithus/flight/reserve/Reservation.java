@@ -19,6 +19,10 @@ class Reservation extends ResourceSupport {
     @JsonProperty
     private final Price price;
 
+    // TODO transient link/id to payment system
+    // TODO transient reservation status
+    // TODO MDB to 'getBy' response from payment system
+
 
     Reservation(UUID uuid, UUID flightId, LocalDateTime paymentDeadline, Price price) {
         this.uuid = uuid;

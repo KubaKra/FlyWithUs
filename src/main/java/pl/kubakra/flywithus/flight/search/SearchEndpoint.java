@@ -14,6 +14,7 @@ import pl.kubakra.flywithus.flight.GetFlightsCriteria;
 import pl.kubakra.flywithus.tech.time.TimeService;
 
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 public class SearchEndpoint {
@@ -40,7 +41,7 @@ public class SearchEndpoint {
 
     @GetMapping(value = "/flights/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Flight> getFlight(@PathVariable String id) {
-        return flightRepo.get(id).map(f -> ResponseEntity.ok().body(addHateoas(f))).orElse(ResponseEntity.notFound().build());
+        return flightRepo.getBy(UUID.fromString(id)).map(f -> ResponseEntity.ok().body(addHateoas(f))).orElse(ResponseEntity.notFound().build());
     }
 
     private Flight addHateoas(Flight f) {
