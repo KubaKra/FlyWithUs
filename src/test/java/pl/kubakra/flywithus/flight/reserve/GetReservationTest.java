@@ -17,6 +17,7 @@ import static java.math.BigDecimal.ZERO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static pl.kubakra.flywithus.payment.PaymentTestFactory.fakePayment;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlyWithUsApp.class)
@@ -39,8 +40,10 @@ public class GetReservationTest {
     public void shouldReturnExistingFlight() throws Exception {
 
         // given
-        Reservation savedReservation = new Reservation(UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4"),
-                UUID.fromString("486f1894-0297-4441-9341-1e1b7edb9849"), ReservationServiceTestConfiguration.NOW.minusDays(6), new Reservation.Price(TEN, ZERO));
+        UUID reservationId = UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4");
+        Reservation savedReservation = new Reservation(reservationId,
+                UUID.fromString("486f1894-0297-4441-9341-1e1b7edb9849"), ReservationServiceTestConfiguration.NOW.minusDays(6), new Reservation.Price(TEN, ZERO),
+                fakePayment(reservationId));
         reservationRepo.save(savedReservation);
 
         // when

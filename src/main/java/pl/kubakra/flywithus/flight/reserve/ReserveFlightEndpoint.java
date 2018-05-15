@@ -72,7 +72,7 @@ public class ReserveFlightEndpoint {
                 methodOn(SearchEndpoint.class).getFlight(reservation.flightId().toString())).withRel("flight"));
         reservationDTO.add(linkTo(
                 methodOn(ReserveFlightEndpoint.class).getReservation(reservation.id().toString())).withSelfRel());
-        reservationDTO.add(new Link(reservation.payment().map(p -> p.link()).orElse("not available"), "payment"));
+        reservationDTO.add(new Link(reservation.payment().link(),"payment"));
         return reservationDTO;
     }
 

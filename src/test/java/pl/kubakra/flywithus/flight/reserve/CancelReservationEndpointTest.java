@@ -11,6 +11,7 @@ import org.springframework.web.context.WebApplicationContext;
 import pl.kubakra.flywithus.FlyWithUsApp;
 import pl.kubakra.flywithus.flight.Flight;
 import pl.kubakra.flywithus.flight.FlightFactory;
+import pl.kubakra.flywithus.payment.Payment;
 
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static pl.kubakra.flywithus.payment.PaymentTestFactory.fakePayment;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FlyWithUsApp.class)
@@ -45,8 +47,12 @@ public class CancelReservationEndpointTest {
         // given
         Flight flight = flightFactory.create(true);
 
-        Reservation savedReservation = new Reservation(UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4"),
-                flight.id(), ReservationServiceTestConfiguration.NOW.minusDays(6), new Reservation.Price(TEN, ZERO));
+        UUID reservationId = UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4");
+        Reservation savedReservation = new Reservation(reservationId,
+                flight.id(),
+                ReservationServiceTestConfiguration.NOW.minusDays(6),
+                new Reservation.Price(TEN, ZERO),
+                fakePayment(reservationId));
         reservationRepo.save(savedReservation);
 
         // when
@@ -54,7 +60,7 @@ public class CancelReservationEndpointTest {
 
                 // then
                 .andExpect(status().isNoContent());
-        assertThat(reservationRepo.getBy(UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4"))).isEmpty();
+        assertThat(reservationRepo.getBy(reservationId)).isEmpty();
     }
 
     @Test
@@ -63,8 +69,12 @@ public class CancelReservationEndpointTest {
         // given
         Flight flight = flightFactory.create(false);
 
-        Reservation savedReservation = new Reservation(UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4"),
-                flight.id(), ReservationServiceTestConfiguration.NOW.minusDays(4), new Reservation.Price(TEN, ZERO));
+        UUID reservationId = UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4");
+        Reservation savedReservation = new Reservation(reservationId,
+                flight.id(),
+                ReservationServiceTestConfiguration.NOW.minusDays(4),
+                new Reservation.Price(TEN, ZERO),
+                fakePayment(reservationId));
         reservationRepo.save(savedReservation);
 
 
@@ -73,7 +83,7 @@ public class CancelReservationEndpointTest {
 
                 // then
                 .andExpect(status().isBadRequest());
-        assertThat(reservationRepo.getBy(UUID.fromString("e3e8472f-e41a-405d-a232-2348e3d6c9d4"))).isNotEmpty();
+        assertThat(reservationRepo.getBy(reservationId)).isNotEmpty();
     }
 
 }

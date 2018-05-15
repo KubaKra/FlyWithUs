@@ -1,15 +1,21 @@
 package pl.kubakra.flywithus.payment;
 
-public final class ExternalPaymentSystemId {
+public final class PayWithUsId implements ExternalServicePaymentId {
 
     private final String id;
 
-    ExternalPaymentSystemId(String id) {
+    PayWithUsId(String id) {
         this.id = id;
     }
 
-    String link() {
+    @Override
+    public String link() {
         return "www.paywithus.com/" + id;
+    }
+
+    @Override
+    public boolean isNotDeterminedYet() {
+        return false;
     }
 
     @Override
@@ -17,7 +23,7 @@ public final class ExternalPaymentSystemId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ExternalPaymentSystemId that = (ExternalPaymentSystemId) o;
+        PayWithUsId that = (PayWithUsId) o;
 
         return id != null ? id.equals(that.id) : that.id == null;
     }

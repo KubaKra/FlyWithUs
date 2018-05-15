@@ -1,11 +1,7 @@
 package pl.kubakra.flywithus.flight.reserve;
 
-import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.kubakra.flywithus.flight.reserve.ReservationRepo;
-import pl.kubakra.flywithus.flight.reserve.ReservationService;
 import pl.kubakra.flywithus.payment.*;
 import pl.kubakra.flywithus.tech.id.IdGenerator;
 import pl.kubakra.flywithus.tech.time.TimeService;
@@ -13,8 +9,6 @@ import pl.kubakra.flywithus.tech.time.TimeService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
-import static org.mockito.BDDMockito.given;
 
 @Configuration
 public class ReservationServiceTestConfiguration {
@@ -68,12 +62,12 @@ public class ReservationServiceTestConfiguration {
 
         return new ExternalPaymentService() {
             @Override
-            public ExternalPaymentSystemId registerNewPayment(BigDecimal value) {
+            public ExternalServicePaymentId registerNewPayment(BigDecimal value) {
                 return ExternalPaymentSystemIdTestFactory.fake();
             }
 
             @Override
-            public boolean cancelPayment(ExternalPaymentSystemId systemId) {
+            public boolean cancelPayment(ExternalServicePaymentId systemId) {
                 return true;
             }
         };

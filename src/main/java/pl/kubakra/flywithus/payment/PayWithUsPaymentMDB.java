@@ -42,9 +42,9 @@ public class PayWithUsPaymentMDB {
 
     public static class PayWithUsPaymentCompleted {
 
-        private final ExternalPaymentSystemId paymentId;
+        private final PayWithUsId paymentId;
 
-        public PayWithUsPaymentCompleted(ExternalPaymentSystemId paymentId) {
+        public PayWithUsPaymentCompleted(PayWithUsId paymentId) {
             this.paymentId = paymentId;
         }
 
@@ -52,9 +52,9 @@ public class PayWithUsPaymentMDB {
 
     public static class PayWithUsPaymentError {
 
-        private final ExternalPaymentSystemId paymentId;
+        private final PayWithUsId paymentId;
 
-        public PayWithUsPaymentError(ExternalPaymentSystemId paymentId) {
+        public PayWithUsPaymentError(PayWithUsId paymentId) {
             this.paymentId = paymentId;
         }
 

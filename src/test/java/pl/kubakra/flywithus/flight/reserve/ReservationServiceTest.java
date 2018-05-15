@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kubakra.flywithus.flight.Flight;
+import pl.kubakra.flywithus.payment.PaymentTestFactory;
 import pl.kubakra.flywithus.user.User;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static pl.kubakra.flywithus.flight.reserve.ReservationServiceTestConfiguration.NOW;
+import static pl.kubakra.flywithus.payment.PaymentTestFactory.fakePayment;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ReservationServiceTestConfiguration.class)
@@ -97,7 +99,7 @@ public class ReservationServiceTest {
 
     private Reservation reservation(BigDecimal totalPrice, BigDecimal discount) {
         return new Reservation(ANY_UUID, ReservationServiceTestConfiguration.UUID, NOW.plusDays(2),
-                new Reservation.Price(totalPrice, discount));
+                new Reservation.Price(totalPrice, discount), fakePayment());
     }
 
     private Flight flightWithPricePerPerson(BigDecimal pricePerPerson) {

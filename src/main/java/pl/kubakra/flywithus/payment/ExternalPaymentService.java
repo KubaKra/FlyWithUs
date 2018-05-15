@@ -4,8 +4,12 @@ import java.math.BigDecimal;
 
 public interface ExternalPaymentService {
 
-    ExternalPaymentSystemId registerNewPayment(BigDecimal value);
+    ExternalServicePaymentId registerNewPayment(BigDecimal value) throws PaymentRegistrationFailed;
 
-    boolean cancelPayment(ExternalPaymentSystemId systemId);
+    boolean cancelPayment(ExternalServicePaymentId systemId);
+
+    class PaymentRegistrationFailed extends Exception {
+
+    }
 
 }

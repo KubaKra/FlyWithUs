@@ -28,11 +28,7 @@ public final class ReservationRepo {
     public void save(Reservation reservation) {
         RESERVATIONS.put(reservation.id(),
                 new ReservationJpaEntity(reservation.id(), reservation.flightId(), reservation.paymentDeadline(), reservation.price()));
-
-        Optional<Payment> payment = reservation.payment();
-        if (payment.isPresent()) {
-            paymentRepo.save(payment.get());
-        }
+        paymentRepo.save(reservation.payment());
     }
 
     public Optional<Reservation> getBy(UUID id) {
@@ -44,11 +40,9 @@ public final class ReservationRepo {
 
         Optional<Payment> payment = paymentRepo.getReservationBy(id);
         if (!payment.isPresent()) {
-            // theoretically it's impossible -> for every new reservation application register new payment but:
-            // it could be different microservice, for such case I'd return just Flight
-
-            return Optional.of(new Reservation(reservationJpaEntity.id, reservationJpaEntity.flightId,
-                    reservationJpaEntity.paymentDeadline, reservationJpaEntity.price));
+            // theoretically it's impossible -> for every new reservation application register new payment, even if there is exception
+            // ... but ... in case of data loss i'd ask business what to do in this case
+            return Optional.empty();
         }
 
         return Optional.of(new Reservation(reservationJpaEntity.id, reservationJpaEntity.flightId,
@@ -62,11 +56,8 @@ public final class ReservationRepo {
     }
 
     private boolean isCancelPaymentSucceeded(Reservation reservation) {
-        Optional<Payment> payment = reservation.payment();
-        if (payment.isPresent()) {
-            return paymentService.cancel(payment.get());
-        }
-        return true;
+        Payment payment = reservation.payment();
+        return paymentService.cancel(payment);
     }
 
     // some annotations

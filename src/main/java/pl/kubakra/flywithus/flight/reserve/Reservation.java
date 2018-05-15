@@ -17,10 +17,6 @@ class Reservation {
     private final Price price;
     private Payment payment;
 
-    Reservation(UUID id, UUID flightId, LocalDateTime paymentDeadline, Price price) {
-        this(id, flightId, paymentDeadline, price, null);
-    }
-
     Reservation(UUID id, UUID flightId, LocalDateTime paymentDeadline, Price price, Payment payment) {
         this.id = id;
         this.flightId = flightId;
@@ -37,8 +33,8 @@ class Reservation {
         return flightId;
     }
 
-    Optional<Payment> payment() {
-        return Optional.ofNullable(payment);
+    Payment payment() {
+        return payment;
     }
 
     LocalDateTime paymentDeadline() {

@@ -7,16 +7,16 @@ public final class Payment {
     private final UUID id;
     private final UUID reservationId;
 
-    private final ExternalPaymentSystemId systemId;
+    private final ExternalServicePaymentId systemId;
     private final System system;
     private Status status;
 
-    Payment(UUID id, UUID reservationId, ExternalPaymentSystemId systemId, System system) {
+    Payment(UUID id, UUID reservationId, ExternalServicePaymentId systemId, System system) {
         this.id = id;
         this.reservationId = reservationId;
         this.systemId = systemId;
         this.system = system;
-        status = Status.NOT_PAID;
+        status = systemId.isNotDeterminedYet() ? Status.ERROR : Status.NOT_PAID;
     }
 
     public String link() {
@@ -31,7 +31,7 @@ public final class Payment {
         return reservationId;
     }
 
-    ExternalPaymentSystemId systemId() {
+    ExternalServicePaymentId systemId() {
         return systemId;
     }
 
@@ -41,6 +41,10 @@ public final class Payment {
 
     void error() {
         status = Status.ERROR;
+    }
+
+    public boolean isError() {
+        return status == Status.ERROR;
     }
 
     @Override
@@ -57,5 +61,4 @@ public final class Payment {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
-
 }

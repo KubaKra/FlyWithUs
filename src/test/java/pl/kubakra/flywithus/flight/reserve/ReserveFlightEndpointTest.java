@@ -60,7 +60,7 @@ public class ReserveFlightEndpointTest {
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
                         "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationServiceTestConfiguration.UUID + "\"}," +
-                        "\"payment\":{\"href\":\"www.paywithus.com/some-fake-id\"}" +
+                        "\"payment\":{\"href\":\"www.paywithus.com/some-fakePayment-id\"}" +
                         "}" +
                         "}"));
 
@@ -88,7 +88,7 @@ public class ReserveFlightEndpointTest {
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
                         "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationServiceTestConfiguration.UUID + "\"}," +
-                        "\"payment\":{\"href\":\"www.paywithus.com/some-fake-id\"}" +
+                        "\"payment\":{\"href\":\"www.paywithus.com/some-fakePayment-id\"}" +
                         "}" +
                         "}"));
     }
@@ -116,7 +116,7 @@ public class ReserveFlightEndpointTest {
                         "\"_links\":{" +
                         "\"flight\":{\"href\":\"http://localhost/flights/486f1894-0297-4441-9341-1e1b7edb9849\"}," +
                         "\"self\":{\"href\":\"http://localhost/flights/reservations/" + ReservationServiceTestConfiguration.UUID + "\"}," +
-                        "\"payment\":{\"href\":\"www.paywithus.com/some-fake-id\"}" +
+                        "\"payment\":{\"href\":\"www.paywithus.com/some-fakePayment-id\"}" +
                         "}" +
                         "}"));
 

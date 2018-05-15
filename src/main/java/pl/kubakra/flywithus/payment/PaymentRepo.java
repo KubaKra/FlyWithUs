@@ -12,7 +12,7 @@ public class PaymentRepo {
 
     private static final Map<UUID, Payment> PAYMENTS = new ConcurrentHashMap<>();
     private static final Map<UUID, Payment> PAYMENTS_BY_RESERVATION_ID = new ConcurrentHashMap<>();
-    private static final Map<ExternalPaymentSystemId, Payment> PAYMENTS_BY_SYSTEM_ID = new ConcurrentHashMap<>();
+    private static final Map<ExternalServicePaymentId, Payment> PAYMENTS_BY_SYSTEM_ID = new ConcurrentHashMap<>();
 
     public Optional<Payment> getBy(UUID id) {
         return Optional.ofNullable(PAYMENTS.get(id));
@@ -28,7 +28,7 @@ public class PaymentRepo {
         return Optional.ofNullable(PAYMENTS_BY_RESERVATION_ID.get(reservationId));
     }
 
-    public Optional<Payment> getBySystemId(ExternalPaymentSystemId systemId) {
+    public Optional<Payment> getBySystemId(PayWithUsId systemId) {
         return Optional.ofNullable(PAYMENTS_BY_SYSTEM_ID.get(systemId));
     }
 }
